@@ -1,3 +1,4 @@
+#include "glad.h"
 #include "glfw3.h"
 
 int main(void)
@@ -15,7 +16,12 @@ int main(void)
         glfwTerminate();
         return -1;
     }
-
+    glfwMakeContextCurrent(window);
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        glfwTerminate();
+        return (-1);
+    }
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
