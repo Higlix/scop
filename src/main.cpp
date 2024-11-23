@@ -1,6 +1,17 @@
 #include "glad.h"
 #include "glfw3.h"
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
+void processInput(GLFWwindow *window)
+{
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+}
+
 int main(void)
 {
     GLFWwindow* window;
@@ -16,19 +27,26 @@ int main(void)
         glfwTerminate();
         return -1;
     }
+
+    /* Make the window's context current */
     glfwMakeContextCurrent(window);
+    
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         glfwTerminate();
         return (-1);
     }
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
-
+    glViewport(0, 0, 640, 480);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+        /* Input here */
+        processInput(window);
+
         /* Render here */
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
