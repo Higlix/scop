@@ -1,5 +1,9 @@
 #include "glad.h"
 #include "glfw3.h"
+#include <iostream>
+
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -21,7 +25,7 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -36,7 +40,7 @@ int main(void)
         glfwTerminate();
         return (-1);
     }
-    glViewport(0, 0, 640, 480);
+    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
