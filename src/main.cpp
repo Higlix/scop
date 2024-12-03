@@ -2,6 +2,8 @@
 #include "glfw3.h"
 #include <iostream>
 
+#include "Shader/Shader.h"
+
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
@@ -55,6 +57,10 @@ int main(void)
     glBindBuffer(GL_ARRAY_BUFFER, VBO); // bind to GL_ARRAY_BUFFER which 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); // copy vertex data to vertex buffer
 
+
+    VertexShader vertexShader;
+    vertexShader.readSource("shaders/vertex/vertex.glsl");
+    std::cout << vertexShader.getSource() << std::endl;;
 
 
 
