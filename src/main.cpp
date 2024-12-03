@@ -42,6 +42,22 @@ int main(void)
     }
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); 
+    
+
+    
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+        0.0f,  0.5f, 0.0f
+    };
+    unsigned int VBO; // vertex buffer object
+    glGenBuffers(1, &VBO); // generate vertex buffer object
+    glBindBuffer(GL_ARRAY_BUFFER, VBO); // bind to GL_ARRAY_BUFFER which 
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); // copy vertex data to vertex buffer
+
+
+
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
