@@ -26,6 +26,10 @@ int main(void)
     if (!glfwInit())
         return -1;
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Hello World", NULL, NULL);
     if (!window)
@@ -58,11 +62,28 @@ int main(void)
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); // copy vertex data to vertex buffer
 
 
-    VertexShader vertexShader;
-    vertexShader.readSource("shaders/vertex/vertex.glsl");
-    std::cout << vertexShader.getSource() << std::endl;;
+    VertexShader vertexShaderSource;
+    vertexShaderSource.readSource("shaders/vertex/vertex.vert");
+    std::cout << vertexShaderSource.getSource() << std::endl;;
 
+    unsigned int vertexShader;
+    vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    const char *source = vertexShaderSource.getSource();
+    glShaderSource(vertexShader, 1, &source, NULL);
+    glCompileShader(vertexShader);
 
+    int  success;
+    char infoLog[512];
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+
+    if(!success)
+    {
+        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        glfwTerminate();
+        return (-1);
+    }
+    
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
