@@ -1,5 +1,5 @@
-#ifndef SCOP
-# define SCOP
+#ifndef SCOP_H
+# define SCOP_H
 
 
 #endif
