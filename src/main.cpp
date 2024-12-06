@@ -1,6 +1,8 @@
 #include "glad.h"
 #include "glfw3.h"
 
+#include <cmath>
+
 #include "Shader/Shader.h"
 
 #define SCREEN_WIDTH 1280
@@ -48,12 +50,6 @@ int main(void)
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); 
     
-    int  success;
-    char infoLog[512];
-
-    /*
-        VERTEX SHADER HERE
-    */
     Shader shader("shaders/vertex/vertex.vert", "shaders/fragment/fragment.frag");
 
     // float vertices[] = {
@@ -61,7 +57,7 @@ int main(void)
     //     0.5f, -0.5f, 0.0f,  // bottom right
     //     -0.5f, -0.5f, 0.0f,  // bottom left
     //     -0.5f,  0.5f, 0.0f   // top left 
-    // };
+    // };   
     // unsigned int indices[] = {  // note that we start from 0!
     //     0, 1, 3,   // first triangle
     //     1, 2, 3    // second triangle
@@ -92,12 +88,13 @@ int main(void)
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3* sizeof(float)));
     glEnableVertexAttribArray(1); 
     
-    glBindBuffer(GL_ARRAY_BUFFER, 0); // unbind VBO
+    // glBindBuffer(GL_ARRAY_BUFFER, 0); // unbind VBO
     // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // unbind EBO
     glBindVertexArray(0); // unbind VAO
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // TO DRAW IN LINES
-    
+    shader.use();
+    int i = 0;
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -108,14 +105,25 @@ int main(void)
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shader.ID);
-
+        shader.use();
+        if (i >= 360)
+        {
+            i = 0;
+        }
         float timeValue = glfwGetTime();
-        float greenValue = sin(timeValue) / 2.0f + 0.5f;
-        int vertexColorLocation = glGetUniformLocation(shader.ID, "ourColor");
-        glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+        float Sine = sin(i) / 1.f;
+        float Cosine = cos(i) / 1.f;
+        // int vertexColorLocation = glGetUniformLocation(shader.ID, "ourColor");
+        // glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
+        vertices[0] += Sine;
+        vertices[1] += Cosine;
+        vertices[6] += Sine;
+        vertices[7] -= Cosine;
+        vertices[12] += Sine;
+        vertices[13] -= Cosine;
 
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         
@@ -125,6 +133,7 @@ int main(void)
         glfwSwapBuffers(window);
         /* Poll for and process events */
         glfwPollEvents();
+        i++;
     }
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
