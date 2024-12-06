@@ -1,31 +1,28 @@
 #ifndef SHADER_H
 # define SHADER_H
 
-# include <iostream>
-# include <fstream>
+#include "glad.h"
+
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 class Shader {
-private:
-    std::string shaderSource;
-
 public:
-    virtual const char *getSource();
-    virtual void readSource(const char *path);
-    virtual void readSource(const std::string path);
-    virtual void setSource(const char *source);
-    virtual void setSource(const std::string source);
+    // the program ID
+    unsigned int ID;
+    std::string vertSource;
+    std::string fragSource;
 
-    Shader();
-    virtual ~Shader();
+    // constructor reads and builds the shader
+    Shader(const char* vertexPath, const char* fragmentPath);
+    // use/activate the shader
+    void use();
+    // utility uniform functions
+    void setBool(const std::string &name, bool value) const;  
+    void setInt(const std::string &name, int value) const;   
+    void setFloat(const std::string &name, float value) const;
 };
-
-class FragmentShader : public Shader {
-    
-};
-
-class VertexShader : public Shader {
-    
-};
-
 
 #endif
