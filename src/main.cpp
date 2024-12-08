@@ -106,24 +106,13 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader.use();
-        if (i >= 360)
-        {
-            i = 0;
-        }
         float timeValue = glfwGetTime();
         float Sine = sin(i) / 1.f;
         float Cosine = cos(i) / 1.f;
         // int vertexColorLocation = glGetUniformLocation(shader.ID, "ourColor");
         // glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
-        vertices[0] += Sine;
-        vertices[1] += Cosine;
-        vertices[6] += Sine;
-        vertices[7] -= Cosine;
-        vertices[12] += Sine;
-        vertices[13] -= Cosine;
-
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        // glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         
